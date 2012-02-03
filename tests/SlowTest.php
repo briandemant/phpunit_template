@@ -7,6 +7,8 @@ class SlowTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function slowTest() {
 		sleep(1);
+		$something = new Something();
+		$something->untested();
 		$this->assertTrue(0 == false);
 	}
 
@@ -19,6 +21,7 @@ class SlowTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function slowPendingTest() {
 		sleep(1);
+
 		// Stop here and mark this test as incomplete.
 		$this->markTestIncomplete(
 			'This test has not been implemented yet.'

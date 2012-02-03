@@ -26,6 +26,11 @@ class SomethingTest extends PHPUnit_Framework_TestCase {
 		$something = new Something();
 		$this->assertInstanceOf("Something", $something);
 	}
+	/** @test */
+	public function testTested() {
+		$something = new Something();
+		$something->tested();
+	}
 	
 	
 		/** @test */
