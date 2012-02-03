@@ -1,0 +1,61 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Test info</title>
+	<script type="text/javascript"
+			  src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+
+			$("#must-be-http").fadeIn();
+			$.get("../build/logs/logfile.json", function (_, _, res) {
+				$("#must-be-http").hide();
+				// the "json" is not really json
+				datas = JSON.parse("[" + res.responseText.replace(new RegExp("}{", "g"), "},{") + "]");
+				datas.sort(function (a, b) {
+					return b.time - a.time;
+				});
+				for (var i = 0; i < datas.length; i++) {
+					data = datas[i];
+					if (data.event == "test" && data.time > 0.1 || data.status == "fail") {
+						console.dir(data);
+						container = $("<div class='" + data.status + "'>");
+						container.append("<h4>" + data.test + "</h4>");
+						container.append("<p>" + data.time + "</p>");
+						$("body").append(container);
+					}
+				}
+			}, "xml");
+		});
+
+	</script>
+	<style type="text/css">
+		h4 {
+			margin-bottom: -15px;
+		}
+
+		#must-be-http {
+			display: none;
+		}
+		
+		.pass h4 {
+			color: green;
+		}
+		
+		.fail h4 {
+			color: red;
+		}
+		.error h4 {
+			color: purple;
+		}
+	</style>
+</head>
+<div id="must-be-http">
+	<h1>I Needz a zerver!!1!</h1>
+
+	<p>This page must be loaded via a server because it uses ajax to read build/logs/logfile.json</p>
+</div>
+
+<body>
+</body>
+</html>
